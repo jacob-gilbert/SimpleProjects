@@ -124,7 +124,6 @@ class CLI_Calculator:
         return total
 
 
-
 # if user wants to use the calculator create a calculator instance to use
 use_calc = input("Do you want to use the calculator? (y/n)\n")
 if use_calc == "y":
