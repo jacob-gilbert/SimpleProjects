@@ -50,42 +50,47 @@ class CLI_Calculator:
             
             # not a number
             else:
+                # ignore spaces    
+                if ascii_val == 32:
+                    continue
+                
                 # verify that a number was given previously (cannot have two operations in a row)
                 if not last_was_num:
                     return "Error: Operation given before a number was given or two operations given in a row"
+                
+                # verify that a number was given previously before the operation
+                if not has_prev_num:
+                    return "Error: Operation given before a number"
                 
                 # check if an operation was given previously then we have two numbers and an operation
                 if has_op:
                     last_saved = num_list[-1]
                     
+                    # can do the mult/div operation immediately because they are first in order of ops
                     if was_mult_div:
                         if prev_op == "m":
                             num_list[-1] = last_saved * prev_number
                         else:
                             num_list[-1] = last_saved / prev_number
+                            
+                    # if its subtraction we don't do the subtraction yet because a mult or div could come next
                     elif prev_op == "s":
-                        num_list[-1] = last_saved - prev_number
+                        num_list.append(-prev_number)
+                        
                     else:
-                        num_list[-1] = last_saved + prev_number
+                        num_list.append(prev_number)
+                        
+                    prev_number = 0 # reset prev_number since it has been stored in a list
                         
                     has_op = False
                     was_mult_div = False
                     prev_op = None
-                    
-                
-                # ignore spaces    
-                if ascii_val == 32:
-                    continue
+                else:
+                    # this case is triggered after the first number is inputted, store it and reset prev_number var
+                    num_list.append(prev_number)
+                    prev_number = 0
                 
                 # must be an operation at this point or a value that doesn't correlate with any acceptable symbol
-                
-                # verify that a number was given previously before the operation
-                if not has_prev_num:
-                    return "Error: Operation given before a number"
-                    
-                # when an operation is found, the previous number must've been accounted for so store it in the list
-                num_list.append(prev_number)
-                prev_number = 0 # reset prev_number since it has been stored in a list
                     
                 if ascii_val == 42:
                     was_mult_div = True
@@ -108,11 +113,33 @@ class CLI_Calculator:
                 
                 # must have a recognized operation at this point
                 has_op = True
+                last_was_num = False
+                
+        # for loop has ended and the last operation has not been completed so do that now
+        last_saved = num_list[-1]
+                    
+        if was_mult_div:
+            if prev_op == "m":
+                num_list[-1] = last_saved * prev_number
+            else:
+                num_list[-1] = last_saved / prev_number
+        # since this is the last operation and all mult/div's have been done already it is safe to do these operations
+        elif prev_op == "s":
+            num_list[-1] = last_saved - prev_number
+        else:
+            num_list[-1] = last_saved + prev_number
+            
+        # all that is left are all the saved numbers that must be added together
+        total = 0
+        for i in range(len(num_list)):
+            total += num_list[i]
+        return total
+
 
 
 # if user wants to use the calculator create a calculator instance to use
 use_calc = input("Do you want to use the calculator? (y/n)\n")
-if use_calc:
+if use_calc == "y":
     calculator = CLI_Calculator()
    
 # using a while loop so we can continuously use the calculator even after it has been used 
