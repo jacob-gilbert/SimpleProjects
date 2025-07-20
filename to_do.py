@@ -84,7 +84,37 @@ while keep_going:
             print("Task Successfully Deleted")
             
     elif answer == "d":
-        continue
+        # get the name of the task to be deleted
+        name = input("Enter the name of the task you would like to mark as complete\n")
+        task_completed = False
+        print("Finding task...")
+        
+        # iterate through task list to find tasks with the given name
+        for i in range(len(task_list)):
+            temp_task = task_list[i]
+            if temp_task.get_name() == name:
+                print(f"Identified Task {name} with priority {temp_task.get_priority()} and notes {temp_task.get_notes()}")
+                complete_task = input("Should this task be marked as complete? (y/n)\n")
+                
+                # task is set to be deleted so delete task and stop searching
+                if complete_task == "y":
+                    temp_task.set_completion_status(True)
+                    task_deleted = True
+                    break
+                
+                # do not delete the found task
+                elif complete_task == "n":
+                    continue
+                else:
+                    print("Incorrect input, task will not be marked as complete, restarting...")
+                    break
+        
+        # inform user whether or not their task was deleted            
+        if not task_deleted:
+            print("Could not find specified task")
+        else:
+            print("Task Successfully Deleted")
+        
     elif answer == "f":
         keep_going = False
         print("Exitting To-Do List...")
