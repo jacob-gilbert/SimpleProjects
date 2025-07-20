@@ -141,6 +141,8 @@ class CLI_Calculator:
 use_calc = input("Do you want to use the calculator? (y/n)\n")
 if use_calc == "y":
     calculator = CLI_Calculator()
+else:
+    exit()
    
 # using a while loop so we can continuously use the calculator even after it has been used 
 while use_calc:
