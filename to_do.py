@@ -30,6 +30,7 @@ class Task:
         self.completed = new_completed
 
 task_list = []
+completed_list = []
 keep_going = True
 print("Welcome to your to-do list!\nYou can add, delete, view, and mark tasks as complete, and you can see your completed tasks")
 while keep_going:
@@ -100,6 +101,13 @@ while keep_going:
                 if complete_task == "y":
                     temp_task.set_completion_status(True)
                     task_deleted = True
+                    
+                    # add task to completed task list
+                    completed_list.append(temp_task)
+                    
+                    # remove task from task list
+                    task_list.pop(i)
+                    
                     break
                 
                 # do not delete the found task
@@ -110,10 +118,10 @@ while keep_going:
                     break
         
         # inform user whether or not their task was deleted            
-        if not task_deleted:
+        if not task_completed:
             print("Could not find specified task")
         else:
-            print("Task Successfully Deleted")
+            print("Task Successfully Marked as Complete")
         
     elif answer == "f":
         keep_going = False
