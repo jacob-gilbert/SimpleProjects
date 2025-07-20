@@ -17,11 +17,15 @@ class CLI_Calculator:
     def compute(self, line):
         # keep track of the numbers and operations in our line of input, this will allow us to
         # maintain pemdas ordering of operations
-        num_op = []
+        num_list = []
+        
+        # remove whitespace from the line
+        line = line.strip()
         
         # want to check if two operations are given in a row so we will remember if the previous character was an operation using a true or false
         # if given 24 we will first get the "2" char so when we get to "4" we want to be able to put it together with 20
         has_op = False
+        was_mult_div = False
         prev_op = None
         
         has_prev = False
@@ -41,9 +45,19 @@ class CLI_Calculator:
                 prev_number = self.addition(self.multiplication(prev_number, 10), number)
                 has_prev = True
             
-            elif ascii_val == 42:
-                
-                continue
+            else:
+                # check if an operation was given previously
+                if has_op == True:
+                        return "Error: Two operations given in a row"
+                    
+                if ascii_val == 32:
+                    continue
+                elif ascii_val == 42:
+                    
+                    # when an operation is found, the previous number must've been accounted for so store it in the list
+                    num_list.append(prev_number)
+                    
+                    continue
 
 
 # if user wants to use the calculator create a calculator instance to use
