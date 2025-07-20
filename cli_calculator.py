@@ -28,8 +28,10 @@ class CLI_Calculator:
         was_mult_div = False
         prev_op = None
         
-        has_prev = False
+        has_prev_num = False
         prev_number = 0
+        
+        last_was_num = False
         
         for i in range(len(line)):
             char = line[i] # identify character
@@ -43,21 +45,69 @@ class CLI_Calculator:
                 # so the addition will just be the number we received and zero
                 # otherwise we will adjust the previous digit by ten and add our new one
                 prev_number = self.addition(self.multiplication(prev_number, 10), number)
-                has_prev = True
+                has_prev_num = True
+                last_was_num = True
             
+            # not a number
             else:
-                # check if an operation was given previously
-                if has_op == True:
-                        return "Error: Two operations given in a row"
+                # verify that a number was given previously (cannot have two operations in a row)
+                if not last_was_num:
+                    return "Error: Operation given before a number was given or two operations given in a row"
+                
+                # check if an operation was given previously then we have two numbers and an operation
+                if has_op:
+                    last_saved = num_list[-1]
                     
+                    if was_mult_div:
+                        if prev_op == "m":
+                            num_list[-1] = last_saved * prev_number
+                        else:
+                            num_list[-1] = last_saved / prev_number
+                    elif prev_op == "s":
+                        num_list[-1] = last_saved - prev_number
+                    else:
+                        num_list[-1] = last_saved + prev_number
+                        
+                    has_op = False
+                    was_mult_div = False
+                    prev_op = None
+                    
+                
+                # ignore spaces    
                 if ascii_val == 32:
                     continue
-                elif ascii_val == 42:
+                
+                # must be an operation at this point or a value that doesn't correlate with any acceptable symbol
+                
+                # verify that a number was given previously before the operation
+                if not has_prev_num:
+                    return "Error: Operation given before a number"
                     
-                    # when an operation is found, the previous number must've been accounted for so store it in the list
-                    num_list.append(prev_number)
+                # when an operation is found, the previous number must've been accounted for so store it in the list
+                num_list.append(prev_number)
+                prev_number = 0 # reset prev_number since it has been stored in a list
                     
-                    continue
+                if ascii_val == 42:
+                    was_mult_div = True
+                    prev_op = "m"
+                        
+                elif ascii_val == 47:
+                    was_mult_div = True
+                    prev_op = "d" 
+                    
+                elif ascii_val == 43:
+                    was_mult_div = False
+                    prev_op = "a"
+                    
+                elif ascii_val == 45:
+                    was_mult_div = False
+                    prev_op = "s"
+                    
+                else:
+                    return "Error: Unrecognized symbol given"
+                
+                # must have a recognized operation at this point
+                has_op = True
 
 
 # if user wants to use the calculator create a calculator instance to use
