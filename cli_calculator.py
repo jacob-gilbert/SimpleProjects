@@ -1,18 +1,6 @@
 class CLI_Calculator:
     def __init__(self):
         self.return_value = 0
-        
-    def addition(self, num1, num2):
-        return num1 + num2
-    
-    def subtraction(self, num1, num2):
-        return num1 - num2
-    
-    def multiplication(self, num1, num2):
-        return num1 * num2
-    
-    def division(self, num1, num2):
-        return num1 / num2
     
     def compute(self, line):
         # keep track of the numbers and operations in our line of input, this will allow us to
