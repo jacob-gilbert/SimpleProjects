@@ -13,6 +13,37 @@ class CLI_Calculator:
     
     def division(self, num1, num2):
         return num1 / num2
+    
+    def compute(self, line):
+        # keep track of the numbers and operations in our line of input, this will allow us to
+        # maintain pemdas ordering of operations
+        num_op = []
+        
+        # want to check if two operations are given in a row so we will remember if the previous character was an operation using a true or false
+        # if given 24 we will first get the "2" char so when we get to "4" we want to be able to put it together with 20
+        has_op = False
+        prev_op = None
+        
+        has_prev = False
+        prev_number = 0
+        
+        for i in range(len(line)):
+            char = line[i] # identify character
+            ascii_val = ord(char) # determine ascii value of the character
+            
+            if 47 < ascii_val < 60:
+                # determine which number the ascii value is
+                number = ascii_val - 48
+                
+                # if there was no previous number to this one, the multiplication will result in 0
+                # so the addition will just be the number we received and zero
+                # otherwise we will adjust the previous digit by ten and add our new one
+                prev_number = self.addition(self.multiplication(prev_number, 10), number)
+                has_prev = True
+            
+            elif ascii_val == 42:
+                
+                continue
 
 
 # if user wants to use the calculator create a calculator instance to use
@@ -28,4 +59,5 @@ while use_calc:
     if line.lower() == "n":
         break
     
-    
+    # run calculator's compute to determine answer in the inputted line
+    print(calculator.compute(line))
