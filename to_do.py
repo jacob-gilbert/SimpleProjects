@@ -122,6 +122,15 @@ while keep_going:
             print("Could not find specified task")
         else:
             print("Task Successfully Marked as Complete")
+            
+    elif answer == "e":
+        # check the number of tasks in the list, if its zero tell the user there are not tasks, otherwise print the list of completed tasks
+        num_tasks = len(completed_list)
+        if num_tasks == 0:
+            print("No tasks found")
+            
+        for i in range(num_tasks):
+            print(f"{i + 1}: {completed_list[i].get_name()}")
         
     elif answer == "f":
         keep_going = False
