@@ -34,7 +34,7 @@ class Task:
         self.completed = new_completed
         
 
-root = None
+root = Task("root", 1, "this is the root")
 completed_list = []
 keep_going = True
 print("Welcome to your to-do list!\nYou can add, delete, view, and mark tasks as complete, and you can see your completed tasks")
@@ -70,7 +70,8 @@ while keep_going:
                 # if this is reached the while loop has ended without adding the new task
                 # put the task at the end of the linked list
                 prev.next = temp_task
-        
+
+    # view tasks    
     elif answer == "b":
         # check the number of tasks in the list, if its zero tell the user there are not tasks, otherwise print the list of tasks
         if root == None:
@@ -84,14 +85,21 @@ while keep_going:
             curr = curr.next
             count += 1
     
-    """elif answer == "c":
+    # delete task
+    elif answer == "c":
+        # check if there are any
+        if root == None:
+            print("No tasks found")
+            continue
+
         # get the name of the task to be deleted
         name = input("Enter the name of the task you would like to delete\n")
         task_deleted = False
         print("Finding task...")
         
         # iterate through task list to find tasks with the given name
-        for i in range(len(task_list)):
+        curr = root
+        while curr.next != None:
             temp_task = task_list[i]
             if temp_task.get_name() == name:
                 print(f"Identified Task {name} with priority {temp_task.get_priority()} and notes {temp_task.get_notes()}")
@@ -116,7 +124,7 @@ while keep_going:
         else:
             print("Task Successfully Deleted")
             
-    elif answer == "d":
+    """elif answer == "d":
         # get the name of the task to be deleted
         name = input("Enter the name of the task you would like to mark as complete\n")
         task_completed = False
