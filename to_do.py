@@ -123,29 +123,35 @@ while keep_going:
         else:
             print("Task Successfully Deleted")
             
-    """elif answer == "d":
-        # get the name of the task to be deleted
+    elif answer == "d":
+        # check if there are any tasks
+        if root.next == None:
+            print("No tasks found")
+            continue
+
+        # get the name of the task to be marked as complete
         name = input("Enter the name of the task you would like to mark as complete\n")
         task_completed = False
         print("Finding task...")
         
         # iterate through task list to find tasks with the given name
-        for i in range(len(task_list)):
-            temp_task = task_list[i]
-            if temp_task.get_name() == name:
-                print(f"Identified Task {name} with priority {temp_task.get_priority()} and notes {temp_task.get_notes()}")
+        curr = root.next
+        prev = root
+        while curr != None:
+            if curr.get_name() == name:
+                print(f"Identified Task {name} with priority {curr.get_priority()} and notes {curr.get_notes()}")
                 complete_task = input("Should this task be marked as complete? (y/n)\n")
                 
                 # task is set to be deleted so delete task and stop searching
                 if complete_task == "y":
-                    temp_task.set_completion_status(True)
+                    curr.set_completion_status(True)
                     task_deleted = True
                     
                     # add task to completed task list
-                    completed_list.append(temp_task)
+                    completed_list.append(curr)
                     
                     # remove task from task list
-                    task_list.pop(i)
+                    prev.next = curr.next
                     
                     break
                 
@@ -155,6 +161,9 @@ while keep_going:
                 else:
                     print("Incorrect input, task will not be marked as complete, restarting...")
                     break
+            
+            prev = curr
+            curr = curr.next
         
         # inform user whether or not their task was deleted            
         if not task_completed:
@@ -175,4 +184,4 @@ while keep_going:
         keep_going = False
         print("Exitting To-Do List...")
     else:
-        print("Invalid input, try again")"""
+        print("Invalid input, try again")
